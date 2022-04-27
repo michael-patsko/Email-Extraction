@@ -1,11 +1,17 @@
-var counter = 0;
-const regex = /\b\w*@softwire\.com\b/gi;
-
 const fs = require('fs');
-const textFile = fs.readFileSync('test.txt', 'utf-8');
+const input = fs.readFileSync('test.txt','utf-8');
+const emailRegex = /\b\S+@\S+\.\S+\b/gi;
+const domainRegex = /(?<=\S+@)\S+\.\S+\b/gi;
+emailMatchArray = input.match(emailRegex);
+domainMatchArray = input.match(domainRegex);
 
-const matchesArray = textFile.match(regex);
-for (let i = 0; i < matchesArray.length; i++) {
-    console.log(matchesArray[i])
+var domains = {};
+for (let i = 0; i < domainMatchArray.length; i++) {
+    if (domainMatchArray[i] in domains) {
+        domains[domainMatchArray[i]] += 1;
+    } else {
+        domains[domainMatchArray[i]] = 1;
+    }
 }
-console.log(`There are ${matchesArray.length} Softwire emails.`)
+
+console.log(domains);
